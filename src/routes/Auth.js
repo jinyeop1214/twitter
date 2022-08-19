@@ -24,23 +24,16 @@ const Auth = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			let data;
 			if (newAccount) {
-				data = await createUserWithEmailAndPassword(
+				await createUserWithEmailAndPassword(
 					authService,
 					email,
 					password
 				);
 			} else {
-				data = await signInWithEmailAndPassword(
-					authService,
-					email,
-					password
-				);
+				await signInWithEmailAndPassword(authService, email, password);
 			}
-			console.log(data);
 		} catch (error) {
-			console.log("오류가발생하였습니다.");
 			console.log(error.message);
 			setError(error.message);
 		}
@@ -53,6 +46,7 @@ const Auth = () => {
 			target: { name },
 		} = e;
 		let provider;
+
 		if (name === "google") {
 			provider = new GoogleAuthProvider();
 			provider.addScope("profile");
@@ -61,8 +55,7 @@ const Auth = () => {
 			provider = new GithubAuthProvider();
 			provider.addScope("repo");
 		}
-		const data = await signInWithPopup(authService, provider);
-		console.log(data);
+		await signInWithPopup(authService, provider);
 	};
 
 	return (

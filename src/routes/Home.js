@@ -1,31 +1,13 @@
 import { dbService } from "fbase";
 import React, { useEffect, useState } from "react";
-import {
-	collection,
-	addDoc,
-	getDocs,
-	onSnapshot,
-	doc,
-} from "firebase/firestore";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
+import Tweet from "components/Tweet";
 
 const Home = ({ userObj }) => {
 	const [tweet, setTweet] = useState("");
 	const [tweets, setTweets] = useState([]);
 
 	useEffect(() => {
-		// const getNweets = async () => {
-		// 	const dbTweets = await getDocs(collection(dbService, "tweets"));
-		// 	let tweetsArr = [];
-		// 	dbTweets.forEach((document) => {
-		// 		tweetsArr.push({
-		// 			...document.data(),
-		// 			id: document.id,
-		// 		});
-		// 	});
-		// 	setTweets(tweetsArr);
-		// };
-		// getNweets();
-
 		onSnapshot(collection(dbService, "tweets"), (snapshot) => {
 			const tweetsArr = snapshot.docs.map((doc) => ({
 				id: doc.id,
@@ -68,9 +50,11 @@ const Home = ({ userObj }) => {
 			</form>
 			<div>
 				{tweets.map((tweet) => (
-					<div key={tweet.id}>
-						<h4>{tweet.text}</h4>
-					</div>
+					<Tweet
+						key={tweet.id}
+						tweetObj={tweet}
+						isOwner={tweet.creatorId === userObj.uid}
+					/>
 				))}
 			</div>
 		</div>

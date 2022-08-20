@@ -16,26 +16,30 @@ const TweetFactory = ({ userObj }) => {
 		if (tweet === "") return;
 		let attachmentURL = "";
 
+		let ori_tweet = tweet;
+		setTweet("");
+
 		if (attachment !== "") {
+			let ori_attachment = attachment;
+			setAttachment("");
+
 			const attachmentRef = ref(
 				storageService,
 				`${userObj.uid}/${uuidv4()}`
 			);
-			await uploadString(attachmentRef, attachment, "data_url");
+
+			await uploadString(attachmentRef, ori_attachment, "data_url");
 			attachmentURL = await getDownloadURL(
 				ref(storageService, attachmentRef)
 			);
 		}
 
 		await addDoc(collection(dbService, "tweets"), {
-			text: tweet,
+			text: ori_tweet,
 			createdAt: Date.now(),
 			creatorId: userObj.uid,
 			attachmentURL,
 		});
-
-		setTweet("");
-		setAttachment("");
 	};
 
 	const onChange = (e) => {

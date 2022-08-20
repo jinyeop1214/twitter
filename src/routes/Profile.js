@@ -1,7 +1,6 @@
-import { authService, dbService } from "fbase";
+import { authService } from "fbase";
 import { signOut, updateProfile } from "firebase/auth";
-import { collection, query, where, orderBy, getDocs } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Profile = ({ userObj, refreshUser }) => {
@@ -19,22 +18,6 @@ const Profile = ({ userObj, refreshUser }) => {
 		} = e;
 		setNewDisplayName(value);
 	};
-
-	// useEffect(() => {
-	// 	const getMyTweets = async () => {
-	// 		const myTweetsQuery = query(
-	// 			collection(dbService, "tweets"),
-	// 			where("creatorId", "==", userObj.uid),
-	// 			orderBy("createdAt", "desc")
-	// 		);
-	// 		const querySnapshot = await getDocs(myTweetsQuery);
-	// 		querySnapshot.forEach((doc) => {
-	// 			console.log(doc.id, "=>", doc.data());
-	// 		});
-	// 	};
-
-	// 	getMyTweets();
-	// }, [userObj.uid]);
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
@@ -54,6 +37,7 @@ const Profile = ({ userObj, refreshUser }) => {
 					placeholder="Display name"
 					value={newDisplayName}
 					onChange={onChange}
+					autoFocus
 				/>
 				<input type="submit" value="Update Profile" />
 			</form>

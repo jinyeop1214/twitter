@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
-import { onAuthStateChanged, updateCurrentUser } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 function App() {
 	const [init, setInit] = useState(false);
@@ -13,16 +13,14 @@ function App() {
 				setUserObj(user);
 				if (!user.displayName)
 					user.displayName = user.email.split("@")[0];
+			} else {
+				setUserObj(null);
 			}
 			setInit(true);
 		});
 	}, []);
 
-	const refreshUser = () => {
-		// await updateCurrentUser(authService, authService.currentUser);
-		// setUserObj(authService.currentUser);
-		setUserObj({ ...authService.currentUser });
-	};
+	const refreshUser = () => setUserObj({ ...authService.currentUser });
 
 	return (
 		<>

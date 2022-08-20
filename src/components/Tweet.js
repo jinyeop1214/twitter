@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { dbService, storageService } from "fbase";
 import { deleteObject, ref } from "firebase/storage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Tweet = ({ tweetObj, isOwner }) => {
 	const [editing, setEditing] = useState(false);
@@ -46,41 +48,52 @@ const Tweet = ({ tweetObj, isOwner }) => {
 	const toggleEditing = () => setEditing((prev) => !prev);
 
 	return (
-		<div>
+		<div className="nweet">
 			{editing ? (
 				isOwner && (
 					<>
-						<form onSubmit={onSubmit}>
+						<form
+							onSubmit={onSubmit}
+							className="container nweetEdit"
+						>
 							<input
 								type="text"
 								placeholder="Edit your tweet"
 								value={newTweet}
-								onChange={onChange}
 								required
+								autoFocus
+								onChange={onChange}
+								className="formInput"
 							/>
-							<input type="submit" value="Update Tweet" />
+							<input
+								type="submit"
+								value="Update Nweet"
+								className="formBtn"
+							/>
 						</form>
-						<button onClick={toggleEditing}>Cancel</button>
+						<span
+							onClick={toggleEditing}
+							className="formBtn cancelBtn"
+						>
+							Cancel
+						</span>
 					</>
 				)
 			) : (
 				<>
 					<h4>{tweetObj.text}</h4>
 					{tweetObj.attachmentURL !== "" && (
-						<img
-							src={tweetObj.attachmentURL}
-							alt="post"
-							width="50px"
-							height="50px"
-						/>
+						<img src={tweetObj.attachmentURL} alt="post" />
 					)}
 					{isOwner && (
-						<>
-							<button onClick={onDeleteClick}>
-								Delete tweet
-							</button>
-							<button onClick={toggleEditing}>Edit tweet</button>
-						</>
+						<div className="nweet__actions">
+							<span onClick={onDeleteClick}>
+								<FontAwesomeIcon icon={faTrash} />
+							</span>
+							<span onClick={toggleEditing}>
+								<FontAwesomeIcon icon={faPencilAlt} />
+							</span>
+						</div>
 					)}
 				</>
 			)}
